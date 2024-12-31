@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.annotation.Component;
 import org.example.dao.UtilisateurDAO;
 import org.example.entity.Utilisateur;
 import org.example.entity.Role;
@@ -8,11 +9,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+
 public class UtilisateurService {
     private final UtilisateurDAO utilisateurDAO;
 
-    public UtilisateurService() {
-        this.utilisateurDAO = new UtilisateurDAO();
+    public UtilisateurService(UtilisateurDAO utilisateurDAO) {
+        this.utilisateurDAO = utilisateurDAO;
     }
 
     public Utilisateur createUtilisateur(String login, String password, Role role) throws SQLException {

@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.annotation.Component;
 import org.example.entity.ElementModule;
 import org.example.entity.Professeur;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class ProfesseurDAO extends AbstractDAO<Professeur> {
     @Override
     protected String getTableName() {

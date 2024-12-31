@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.annotation.Component;
 import org.example.dao.EvaluationDAO;
 import org.example.dao.ModaliteEvaluationDAO;
 import org.example.entity.ModaliteEvaluation;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class ModaliteEvaluationService {
 
     private final ModaliteEvaluationDAO modaliteEvaluationDAO;

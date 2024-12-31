@@ -1,6 +1,7 @@
 package org.example.dao;
 
 
+import org.example.annotation.Component;
 import org.example.entity.Evaluation;
 
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class EvaluationDAO extends AbstractDAO<Evaluation> {
     @Override
     protected String getTableName() {

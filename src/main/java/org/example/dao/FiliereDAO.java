@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.annotation.Component;
 import org.example.entity.Etudiant;
 import org.example.entity.Filiere;
 import org.example.entity.Module;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Component
 public class FiliereDAO extends AbstractDAO<Filiere> {
     @Override
     protected String getTableName() {
@@ -64,11 +65,12 @@ public class FiliereDAO extends AbstractDAO<Filiere> {
             stmt.setLong(1, filiereId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Module module = new Module();
-                module.setId(rs.getLong("id"));
-                module.setCode(rs.getString("code"));
-                module.setNom(rs.getString("nom"));
-                module.setSemestre(Semestre.valueOf(rs.getString("semestre")));
+                Module module = new Module.Builder()
+                        .id(rs.getLong("id"))
+                        .code(rs.getString("code"))
+                        .nom(rs.getString("nom"))
+                        .semestre(Semestre.valueOf(rs.getString("semestre")))
+                        .build();
                 modules.add(module);
             }
         }

@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.annotation.Component;
 import org.example.entity.Professeur;
 import org.example.entity.Role;
 import org.example.entity.Utilisateur;
@@ -9,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+@Component
 public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     private final ProfesseurDAO professeurDAO;
 
-    public UtilisateurDAO() {
-        this.professeurDAO = new ProfesseurDAO();
+    public UtilisateurDAO(ProfesseurDAO professeurDAO) {
+        this.professeurDAO = professeurDAO;
     }
 
     @Override

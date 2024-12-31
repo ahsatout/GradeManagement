@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.annotation.Component;
 import org.example.entity.Evaluation;
 import org.example.entity.ModaliteEvaluation;
 import org.example.entity.Type;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class ModaliteEvaluationDAO extends AbstractDAO<ModaliteEvaluation> {
     @Override
     protected String getTableName() {

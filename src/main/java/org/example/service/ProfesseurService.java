@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.annotation.Component;
 import org.example.dao.ProfesseurDAO;
 import org.example.entity.ElementModule;
 import org.example.entity.Professeur;
@@ -7,7 +8,7 @@ import org.example.entity.Professeur;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
+@Component
 public class ProfesseurService {
 
     private final ProfesseurDAO professeurDAO;

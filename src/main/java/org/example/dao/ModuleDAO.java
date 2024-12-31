@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.annotation.Component;
 import org.example.entity.ElementModule;
 import org.example.entity.Module;
 import org.example.entity.Semestre;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class ModuleDAO extends AbstractDAO<Module> {
 
     @Override

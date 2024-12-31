@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.annotation.Component;
 import org.example.entity.ElementModule;
 import org.example.entity.ModaliteEvaluation;
 import org.example.entity.Type;
@@ -7,7 +8,7 @@ import org.example.entity.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class ElementModuleDAO extends AbstractDAO<ElementModule> {
     @Override
     protected String getTableName() {
