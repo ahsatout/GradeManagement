@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.annotation.Component;
 import org.example.dao.ModuleDAO;
 import org.example.entity.Module;
 import org.example.entity.Semestre;
@@ -8,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class ModuleService {
     private final ModuleDAO moduleDAO;
 
