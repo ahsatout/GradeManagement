@@ -16,17 +16,17 @@ import java.util.Optional;
 public class ModaliteEvaluationDAO extends AbstractDAO<ModaliteEvaluation> {
     @Override
     protected String getTableName() {
-        return "ModaliteEvaluation";
+        return "Modalite_Evaluation";
     }
 
     @Override
     protected String getInsertQuery() {
-        return "INSERT INTO ModaliteEvaluation (type, coefficient, element_module_id) VALUES (?, ?, ?)";
+        return "INSERT INTO Modalite_Evaluation (type, coefficient, element_module_id) VALUES (?, ?, ?)";
     }
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE ModaliteEvaluation SET type = ?, coefficient = ?, element_module_id = ? WHERE id = ?";
+        return "UPDATE Modalite_Evaluation SET type = ?, coefficient = ?, element_module_id = ? WHERE id = ?";
     }
 
     @Override

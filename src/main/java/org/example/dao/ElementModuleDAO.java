@@ -75,7 +75,7 @@ public class ElementModuleDAO extends AbstractDAO<ElementModule> {
     }
 
     private List<ModaliteEvaluation> findModalites(Long elementId) throws SQLException {
-        String sql = "SELECT * FROM ModaliteEvaluation WHERE element_module_id = ?";
+        String sql = "SELECT * FROM Modalite_Evaluation WHERE element_module_id = ?";
         List<ModaliteEvaluation> modalites = new ArrayList<>();
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

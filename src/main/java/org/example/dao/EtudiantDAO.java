@@ -80,8 +80,8 @@ public class EtudiantDAO extends AbstractDAO<Etudiant> {
 
     private List<Evaluation> loadEvaluations(Long etudiantId) throws SQLException {
         List<Evaluation> evaluations = new ArrayList<>();
-        String sql = "SELECT e.*, m.* FROM evaluations e " +
-                "LEFT JOIN modalite_evaluations m ON e.modalite_evaluation_id = m.id " +
+        String sql = "SELECT e.*, m.* FROM evaluation e " +
+                "LEFT JOIN modalite_evaluation m ON e.modalite_evaluation_id = m.id " +
                 "WHERE e.etudiant_id = ?";
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
