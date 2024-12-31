@@ -67,4 +67,15 @@ public class ModaliteEvaluation {
     public void setEvaluations(List<Evaluation> evaluations) {
         this.evaluations = evaluations;
     }
+
+    @Override
+    public String toString() {
+        return "ModaliteEvaluation{" +
+                "id=" + id +
+                ", type=" + type +
+                ", coefficient=" + coefficient +
+                ", elementModule=" + elementModule +
+                ", evaluations=" + evaluations +
+                '}';
+    }
 }

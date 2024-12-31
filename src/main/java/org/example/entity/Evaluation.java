@@ -60,4 +60,15 @@ public class Evaluation {
     public void setModaliteEvaluation(ModaliteEvaluation modaliteEvaluation) {
         this.modaliteEvaluation = modaliteEvaluation;
     }
+
+    @Override
+    public String toString() {
+        return "Evaluation{" +
+                "id=" + id +
+                ", note=" + note +
+                ", absent=" + absent +
+                ", etudiant=" + etudiant +
+                ", modaliteEvaluation=" + modaliteEvaluation +
+                '}';
+    }
 }

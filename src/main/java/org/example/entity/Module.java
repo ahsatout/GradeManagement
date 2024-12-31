@@ -77,4 +77,16 @@ public class Module {
     public void setElementModules(List<ElementModule> elementModules) {
         this.elementModules = elementModules;
     }
+
+    @Override
+    public String toString() {
+        return "Module{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", nom='" + nom + '\'' +
+                ", filiere=" + filiere +
+                ", semestre=" + semestre +
+                ", elementModules=" + elementModules +
+                '}';
+    }
 }

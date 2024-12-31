@@ -61,4 +61,15 @@ public class Utilisateur {
     public void setProfesseur(Professeur professeur) {
         this.professeur = professeur;
     }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", professeur=" + professeur +
+                '}';
+    }
 }

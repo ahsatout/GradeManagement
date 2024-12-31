@@ -75,4 +75,16 @@ public class ElementModule {
     public void setModaliteEvaluations(List<ModaliteEvaluation> modaliteEvaluations) {
         this.modaliteEvaluations = modaliteEvaluations;
     }
+
+    @Override
+    public String toString() {
+        return "ElementModule{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", coefficient=" + coefficient +
+                ", module=" + module +
+                ", professeur=" + professeur +
+                ", modaliteEvaluations=" + modaliteEvaluations +
+                '}';
+    }
 }

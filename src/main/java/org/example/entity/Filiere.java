@@ -65,4 +65,15 @@ public class Filiere {
     public void setEtudiants(List<Etudiant> etudiants) {
         this.etudiants = etudiants;
     }
+
+    @Override
+    public String toString() {
+        return "Filiere{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", nom='" + nom + '\'' +
+                ", modules=" + modules +
+                ", etudiants=" + etudiants +
+                '}';
+    }
 }

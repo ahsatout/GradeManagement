@@ -85,4 +85,17 @@ public class Professeur {
     public void setElementModules(List<ElementModule> elementModules) {
         this.elementModules = elementModules;
     }
+
+    @Override
+    public String toString() {
+        return "Professeur{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", specialite='" + specialite + '\'' +
+                ", utilisateur=" + utilisateur +
+                ", elementModules=" + elementModules +
+                '}';
+    }
 }

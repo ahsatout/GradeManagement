@@ -75,4 +75,16 @@ public class Etudiant {
     public void setEvaluations(List<Evaluation> evaluations) {
         this.evaluations = evaluations;
     }
+
+    @Override
+    public String toString() {
+        return "Etudiant{" +
+                "id=" + id +
+                ", cne='" + cne + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", filiere=" + filiere +
+                ", evaluations=" + evaluations +
+                '}';
+    }
 }
