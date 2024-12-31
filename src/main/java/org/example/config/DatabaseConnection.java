@@ -4,18 +4,38 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/grade_management_db";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static String URL;
+    private static String USER;
+    private static String PASSWORD;
 
     private static DatabaseConnection instance;
 
     private DatabaseConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            loadProperties();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Failed to load MySQL driver", e);
+        }
+    }
+
+    private void loadProperties() {
+        Properties properties = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Unable to find database.properties");
+            }
+            properties.load(input);
+            URL = properties.getProperty("db.url");
+            USER = properties.getProperty("db.user");
+            PASSWORD = properties.getProperty("db.password");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load database properties", e);
         }
     }
 
