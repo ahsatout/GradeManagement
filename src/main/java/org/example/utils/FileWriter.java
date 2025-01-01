@@ -2,24 +2,23 @@ package org.example.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Logger {
+public class FileWriter {
     private static String logFilePath = "logs/application.log"; // Default log file path
-    private static Logger instance;
+    private static FileWriter instance;
 
     // Private constructor to prevent instantiation
-    private Logger() {}
+    private FileWriter() {}
 
     // Singleton instance getter
-    public static Logger getInstance() {
+    public static FileWriter getInstance() {
         if (instance == null) {
-            synchronized (Logger.class) {
+            synchronized (FileWriter.class) {
                 if (instance == null) {
-                    instance = new Logger();
+                    instance = new FileWriter();
                 }
             }
         }
@@ -40,7 +39,7 @@ public class Logger {
     // Synchronized method to write log messages to the file
     public synchronized void writeLog(String message) {
         ensureLogDirectoryExists();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFilePath, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(logFilePath, true))) {
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             writer.write(timestamp + " - " + message);
             writer.newLine();
