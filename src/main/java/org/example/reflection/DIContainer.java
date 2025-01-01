@@ -1,6 +1,7 @@
 package org.example.reflection;
 
 import org.example.annotation.Component;
+import org.example.dao.DAOFactory;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 public class DIContainer {
 
     private final Map<Class<?>, Object> components = new HashMap<>();
+    DAOFactory daoFactory = DAOFactory.getInstance();
 
     public DIContainer(String... basePackages) throws Exception {
         // Loop through each base package and scan for @Component-annotated classes
