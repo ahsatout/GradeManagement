@@ -9,44 +9,41 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-
-public class UtilisateurService {
+@Component
+public class UtilisateurService implements CrudService<Utilisateur> {
     private final UtilisateurDAO utilisateurDAO;
 
     public UtilisateurService(UtilisateurDAO utilisateurDAO) {
         this.utilisateurDAO = utilisateurDAO;
     }
 
-    public Utilisateur createUtilisateur(String login, String password, Role role) throws SQLException {
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setLogin(login);
-        utilisateur.setPassword(password);
-        utilisateur.setRole(role);
+    @Override
+    public Utilisateur create(Utilisateur utilisateur) throws SQLException {
         return utilisateurDAO.save(utilisateur);
     }
 
-    public Utilisateur updateUtilisateur(Long id, String login, String password, Role role) throws SQLException {
-        Optional<Utilisateur> optionalUtilisateur = utilisateurDAO.findById(id);
-        if (optionalUtilisateur.isPresent()) {
-            Utilisateur utilisateur = optionalUtilisateur.get();
-            utilisateur.setLogin(login);
-            utilisateur.setPassword(password);
-            utilisateur.setRole(role);
+    @Override
+    public Utilisateur update(Long id, Utilisateur utilisateur) throws SQLException {
+        Optional<Utilisateur> existingUtilisateur = utilisateurDAO.findById(id);
+        if (existingUtilisateur.isPresent()) {
             return utilisateurDAO.update(utilisateur);
         } else {
             throw new IllegalArgumentException("Utilisateur non trouvé avec l'ID: " + id);
         }
     }
 
-    public void deleteUtilisateur(Long id) throws SQLException {
+    @Override
+    public void delete(Long id) throws SQLException {
         utilisateurDAO.delete(id);
     }
 
-    public Optional<Utilisateur> getUtilisateurById(Long id) throws SQLException {
+    @Override
+    public Optional<Utilisateur> getById(Long id) throws SQLException {
         return utilisateurDAO.findById(id);
     }
 
-    public List<Utilisateur> getAllUtilisateurs() throws SQLException {
+    @Override
+    public List<Utilisateur> getAll() throws SQLException {
         return utilisateurDAO.findAll();
     }
 

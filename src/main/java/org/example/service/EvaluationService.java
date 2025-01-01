@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.annotation.Component;
 import org.example.dao.EvaluationDAO;
 import org.example.entity.Evaluation;
 
@@ -7,7 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class EvaluationService {
+@Component
+public class EvaluationService implements CrudService<Evaluation> {
     private final EvaluationDAO evaluationDAO;
 
     // Constructor with dependency injection
@@ -15,21 +17,37 @@ public class EvaluationService {
         this.evaluationDAO = evaluationDAO;
     }
 
-    public Evaluation saveEvaluation(Evaluation evaluation) throws SQLException {
+    @Override
+    public Evaluation create(Evaluation evaluation) throws SQLException {
         return evaluationDAO.save(evaluation);
     }
 
-    public Evaluation updateEvaluation(Evaluation evaluation) throws SQLException {
-        return evaluationDAO.update(evaluation);
+    @Override
+    public Evaluation update(Long id, Evaluation evaluation) throws SQLException {
+        Optional<Evaluation> existingEvaluation = evaluationDAO.findById(id);
+        if (existingEvaluation.isPresent()) {
+            return evaluationDAO.update(evaluation);
+        } else {
+            throw new IllegalArgumentException("Evaluation not found with ID: " + id);
+        }
     }
 
-    public void deleteEvaluation(Long id) throws SQLException {
+    @Override
+    public void delete(Long id) throws SQLException {
         evaluationDAO.delete(id);
     }
 
-    public Optional<Evaluation> getEvaluationById(Long id) throws SQLException {
+    @Override
+    public Optional<Evaluation> getById(Long id) throws SQLException {
         return evaluationDAO.findById(id);
     }
+
+    @Override
+    public List<Evaluation> getAll() throws SQLException {
+        return evaluationDAO.findAll();
+    }
+
+    // Specific methods for Evaluation service
 
     public List<Evaluation> getEvaluationsByEtudiant(Long etudiantId) throws SQLException {
         return evaluationDAO.findByEtudiant(etudiantId);
@@ -37,10 +55,6 @@ public class EvaluationService {
 
     public List<Evaluation> getEvaluationsByModaliteEvaluation(Long modaliteId) throws SQLException {
         return evaluationDAO.findByModaliteEvaluation(modaliteId);
-    }
-
-    public List<Evaluation> getAllEvaluations() throws SQLException {
-        return evaluationDAO.findAll();
     }
 
     public float calculateAverageNoteByEtudiant(Long etudiantId) throws SQLException {

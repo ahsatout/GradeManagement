@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.annotation.Component;
 import org.example.dao.EtudiantDAO;
 import org.example.entity.Etudiant;
 
@@ -7,7 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class EtudiantService {
+@Component
+public class EtudiantService implements CrudService<Etudiant> {
     private final EtudiantDAO etudiantDAO;
 
     // Constructor with dependency injection
@@ -15,33 +17,39 @@ public class EtudiantService {
         this.etudiantDAO = etudiantDAO;
     }
 
-    // Save a new Etudiant
-    public Etudiant saveEtudiant(Etudiant etudiant) throws SQLException {
+    @Override
+    public Etudiant create(Etudiant etudiant) throws SQLException {
         return etudiantDAO.save(etudiant);
     }
 
-    // Update an existing Etudiant
-    public Etudiant updateEtudiant(Etudiant etudiant) throws SQLException {
-        return etudiantDAO.update(etudiant);
+    @Override
+    public Etudiant update(Long id, Etudiant etudiant) throws SQLException {
+        Optional<Etudiant> existingEtudiant = etudiantDAO.findById(id);
+        if (existingEtudiant.isPresent()) {
+            return etudiantDAO.update(etudiant);
+        } else {
+            throw new IllegalArgumentException("Etudiant not found with ID: " + id);
+        }
     }
 
-    // Delete an Etudiant by ID
-    public void deleteEtudiant(Long id) throws SQLException {
+    @Override
+    public void delete(Long id) throws SQLException {
         etudiantDAO.delete(id);
     }
 
-    // Find an Etudiant by ID
-    public Optional<Etudiant> getEtudiantById(Long id) throws SQLException {
+    @Override
+    public Optional<Etudiant> getById(Long id) throws SQLException {
         return etudiantDAO.findById(id);
     }
 
-    // Find an Etudiant by CNE
-    public Optional<Etudiant> getEtudiantByCNE(String cne) throws SQLException {
-        return etudiantDAO.findByCNE(cne);
+    @Override
+    public List<Etudiant> getAll() throws SQLException {
+        return etudiantDAO.findAll();
     }
 
-    // Get all Etudiants
-    public List<Etudiant> getAllEtudiants() throws SQLException {
-        return etudiantDAO.findAll();
+    // Specific methods for Etudiant service
+
+    public Optional<Etudiant> getEtudiantByCNE(String cne) throws SQLException {
+        return etudiantDAO.findByCNE(cne);
     }
 }

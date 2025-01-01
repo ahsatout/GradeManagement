@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.annotation.Component;
 import org.example.dao.ElementModuleDAO;
 import org.example.entity.ElementModule;
 
@@ -7,7 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ElementModuleService {
+@Component
+public class ElementModuleService implements CrudService<ElementModule> {
 
     private final ElementModuleDAO elementModuleDAO;
 
@@ -16,32 +18,38 @@ public class ElementModuleService {
         this.elementModuleDAO = elementModuleDAO;
     }
 
-    // Save a new ElementModule
-    public ElementModule saveElementModule(ElementModule elementModule) throws SQLException {
+    @Override
+    public ElementModule create(ElementModule elementModule) throws SQLException {
         return elementModuleDAO.save(elementModule);
     }
 
-    // Update an existing ElementModule
-    public ElementModule updateElementModule(ElementModule elementModule) throws SQLException {
-        return elementModuleDAO.update(elementModule);
+    @Override
+    public ElementModule update(Long id, ElementModule elementModule) throws SQLException {
+        Optional<ElementModule> existingElementModule = elementModuleDAO.findById(id);
+        if (existingElementModule.isPresent()) {
+            return elementModuleDAO.update(elementModule);
+        } else {
+            throw new IllegalArgumentException("ElementModule not found with ID: " + id);
+        }
     }
 
-    // Delete an ElementModule by ID
-    public void deleteElementModule(Long id) throws SQLException {
+    @Override
+    public void delete(Long id) throws SQLException {
         elementModuleDAO.delete(id);
     }
 
-    // Find an ElementModule by ID
-    public Optional<ElementModule> getElementModuleById(Long id) throws SQLException {
+    @Override
+    public Optional<ElementModule> getById(Long id) throws SQLException {
         return elementModuleDAO.findById(id);
     }
 
-    // Get all ElementModules
-    public List<ElementModule> getAllElementModules() throws SQLException {
+    @Override
+    public List<ElementModule> getAll() throws SQLException {
         return elementModuleDAO.findAll();
     }
 
-    // Get ElementModules by Professeur ID
+    // Specific methods for ElementModule service
+
     public List<ElementModule> getElementModulesByProfesseurId(Long professeurId) throws SQLException {
         return elementModuleDAO.findByProfesseurId(professeurId);
     }
