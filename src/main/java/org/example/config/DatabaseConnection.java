@@ -32,7 +32,7 @@ public class DatabaseConnection {
             }
             properties.load(input);
             URL = properties.getProperty("db.url");
-            USER = properties.getProperty("db.user");
+            USER = properties.getProperty("db.username");
             PASSWORD = properties.getProperty("db.password");
         } catch (IOException e) {
             throw new RuntimeException("Failed to load database properties", e);
