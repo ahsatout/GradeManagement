@@ -10,7 +10,7 @@ public class FileWriter {
     private static String logFilePath = "logs/application.log"; // Default log file path
     private static FileWriter instance;
 
-    // Private constructor to prevent instantiation
+
     private FileWriter() {}
 
     // Singleton instance getter

@@ -144,18 +144,19 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         }
     }
 
-    public Optional<Utilisateur> findUtilisateurByLoginAndPassword(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM Utilisateur WHERE login = ? and password = ?";
-        try(Connection conn = dbConnection.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1,username);
-            stmt.setString(2,password);
-            try(ResultSet rs = stmt.executeQuery()) {
-                if(rs.next()) {
-                    return Optional.of(mapResultSetToEntity(rs));
+    public boolean isValidUser(String username, String password,String role) throws SQLException {
+        String query = "SELECT COUNT(*) FROM Utilisateur WHERE login = ? AND password = ? AND role = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, role);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retourne true si un utilisateur correspond
                 }
-                return Optional.empty();
             }
-    }
+        }
+        return false;
     }
 }

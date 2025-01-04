@@ -69,7 +69,7 @@ public class Utilisateur {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
-                ", professeur=" + professeur +
+                ", professeur=" + professeur+
                 '}';
     }
 }

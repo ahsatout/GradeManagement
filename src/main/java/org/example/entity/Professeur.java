@@ -3,7 +3,7 @@ package org.example.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professeur {
+public class Professeur implements Cloneable{
     private Long id;
     private String code;
     private String nom;
@@ -97,5 +97,17 @@ public class Professeur {
                 ", utilisateur=" + utilisateur +
                 ", elementModules=" + elementModules +
                 '}';
+    }
+
+    @Override
+    public Professeur clone() {
+        try {
+            Professeur clonedProfesseur = (Professeur) super.clone();
+            clonedProfesseur.elementModules = new ArrayList<>();
+            clonedProfesseur.elementModules.addAll(this.elementModules);
+            return clonedProfesseur;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
