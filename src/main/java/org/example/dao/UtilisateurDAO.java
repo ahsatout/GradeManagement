@@ -143,4 +143,20 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
             }
         }
     }
+
+    public boolean isValidUser(String username, String password,String role) throws SQLException {
+        String query = "SELECT COUNT(*) FROM Utilisateur WHERE login = ? AND password = ? AND role = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, role);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retourne true si un utilisateur correspond
+                }
+            }
+        }
+        return false;
+    }
 }
