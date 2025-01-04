@@ -50,4 +50,8 @@ public class UtilisateurService implements CrudService<Utilisateur> {
     public Optional<Utilisateur> getUtilisateurByLogin(String login) throws SQLException {
         return utilisateurDAO.findByLogin(login);
     }
+
+    public boolean isValidUser(String username, String password,String role) throws SQLException {
+        return utilisateurDAO.isValidUser(username, password, role);
+    }
 }
