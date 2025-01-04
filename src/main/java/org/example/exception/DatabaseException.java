@@ -1,9 +1,11 @@
 package org.example.exception;
 
-public class DAOException extends Exception{
-    public DAOException(String message) {
+public class DatabaseException extends AppException {
+    public DatabaseException(String message) {
         super(message);
     }
 
-
+    public DatabaseException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
