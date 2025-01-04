@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Component
 public class FiliereDAO extends AbstractDAO<Filiere> {
     @Override
@@ -112,58 +111,21 @@ public class FiliereDAO extends AbstractDAO<Filiere> {
 
     @Override
     public Filiere save(Filiere entity) throws SQLException {
-        String sql = getInsertQuery();
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            setInsertParameters(stmt, entity);
-            stmt.executeUpdate();
-
-            ResultSet generatedKeys = stmt.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                entity.setId(generatedKeys.getLong(1));
-            }
-            return entity;
-        }
+        return null;
     }
 
     @Override
     public Filiere update(Filiere entity) throws SQLException {
-        String sql = getUpdateQuery();
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            setUpdateParameters(stmt, entity);
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected == 0) {
-                throw new SQLException("Update failed, no rows affected.");
-            }
-            return entity;
-        }
+        return null;
     }
 
     @Override
-    public void delete(Long id) throws SQLException {
-        String sql = "DELETE FROM Filiere WHERE id = ?";
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected == 0) {
-                throw new SQLException("Delete failed, no rows affected.");
-            }
-        }
+    public void delete(Long id) {
+
     }
 
     @Override
     public Optional<Filiere> findById(Long id) throws SQLException {
-        String sql = "SELECT * FROM Filiere WHERE id = ?";
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return Optional.of(mapResultSetToEntity(rs));
-            }
-        }
         return Optional.empty();
     }
 }

@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.exception.DAOException;
 
 import java.sql.SQLException;
 import java.util.List;
