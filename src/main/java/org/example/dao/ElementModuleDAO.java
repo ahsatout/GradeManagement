@@ -8,6 +8,8 @@ import org.example.entity.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Component
 public class ElementModuleDAO extends AbstractDAO<ElementModule> {
     @Override
@@ -109,17 +111,102 @@ public class ElementModuleDAO extends AbstractDAO<ElementModule> {
 
     @Override
     public ElementModule save(ElementModule entity) throws SQLException {
-        return null;
+        String sql = getInsertQuery();
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            setInsertParameters(stmt, entity);
+            stmt.executeUpdate();
+
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                entity.setId(generatedKeys.getLong(1));
+                // Save associated modalités d'évaluation if they exist
+                if (entity.getModaliteEvaluations() != null && !entity.getModaliteEvaluations().isEmpty()) {
+                    saveModalites(entity.getId(), entity.getModaliteEvaluations());
+                }
+            }
+            return entity;
+        }
     }
 
     @Override
     public ElementModule update(ElementModule entity) throws SQLException {
-        return null;
+        String sql = getUpdateQuery();
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            setUpdateParameters(stmt, entity);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Update failed, no rows affected.");
+            }
+
+            // Update associated modalités d'évaluation
+            if (entity.getModaliteEvaluations() != null) {
+                // First delete existing modalités
+                deleteModalites(entity.getId());
+                // Then save new ones
+                saveModalites(entity.getId(), entity.getModaliteEvaluations());
+            }
+
+            return entity;
+        }
     }
 
     @Override
     public void delete(Long id) throws SQLException {
+        // First delete associated modalités d'évaluation
+        deleteModalites(id);
 
+        // Then delete the element module
+        String sql = "DELETE FROM ElementModule WHERE id = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Delete failed, no rows affected.");
+            }
+        }
+    }
+
+    private void deleteModalites(Long elementModuleId) throws SQLException {
+        String sql = "DELETE FROM Modalite_Evaluation WHERE element_module_id = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, elementModuleId);
+            stmt.executeUpdate();
+        }
+    }
+
+    private void saveModalites(Long elementModuleId, List<ModaliteEvaluation> modalites) throws SQLException {
+        String sql = "INSERT INTO Modalite_Evaluation (type, coefficient, element_module_id) VALUES (?, ?, ?)";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (ModaliteEvaluation modalite : modalites) {
+                stmt.setString(1, modalite.getType().name());
+                stmt.setFloat(2, modalite.getCoefficient());
+                stmt.setLong(3, elementModuleId);
+                stmt.executeUpdate();
+
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    modalite.setId(generatedKeys.getLong(1));
+                }
+            }
+        }
+    }
+
+    @Override
+    public Optional<ElementModule> findById(Long id) throws SQLException {
+        String sql = "SELECT * FROM ElementModule WHERE id = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return Optional.of(mapResultSetToEntity(rs));
+            }
+        }
+        return Optional.empty();
     }
 }
-

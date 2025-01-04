@@ -143,4 +143,19 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
             }
         }
     }
+
+    public Optional<Utilisateur> findUtilisateurByLoginAndPassword(String username, String password) throws SQLException {
+        String sql = "SELECT * FROM Utilisateur WHERE login = ? and password = ?";
+        try(Connection conn = dbConnection.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1,username);
+            stmt.setString(2,password);
+            try(ResultSet rs = stmt.executeQuery()) {
+                if(rs.next()) {
+                    return Optional.of(mapResultSetToEntity(rs));
+                }
+                return Optional.empty();
+            }
+    }
+    }
 }
