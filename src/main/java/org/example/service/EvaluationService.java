@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.annotation.Component;
 import org.example.dao.EvaluationDAO;
 import org.example.entity.Evaluation;
+import org.example.entity.Professeur;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -49,15 +50,38 @@ public class EvaluationService implements CrudService<Evaluation> {
 
     // Specific methods for Evaluation service
 
-    public List<Evaluation> getEvaluationsByEtudiant(Long etudiantId) throws SQLException {
-        return evaluationDAO.findByEtudiant(etudiantId);
+    // Method to retrieve evaluations by professor ID
+    public List<Evaluation> getEvaluationsByProfesseurId(Long professeurId) throws SQLException {
+        return evaluationDAO.findEvaluationsByProfesseurId(professeurId);
     }
 
-    public List<Evaluation> getEvaluationsByModaliteEvaluation(Long modaliteId) throws SQLException {
-        return evaluationDAO.findByModaliteEvaluation(modaliteId);
+    // Method to validate an evaluation
+    public boolean validateEvaluation(Long evaluationId) throws SQLException {
+        return evaluationDAO.validateEvaluation(evaluationId);
     }
 
-    public float calculateAverageNoteByEtudiant(Long etudiantId) throws SQLException {
-        return evaluationDAO.calculateAverageNoteByEtudiant(etudiantId);
+    // Method to calculate the average grade of an evaluation module
+    public float calculateAverage(Long elementModuleId) throws SQLException {
+        return evaluationDAO.calculateAverage(elementModuleId);
+    }
+
+    // Method to check if the note is valid (between 0 and 20)
+    public boolean isValidNote(Float note) {
+        return evaluationDAO.isValidNote(note);
+    }
+
+    // Method to check if all notes have been entered for a module
+    public boolean areAllNotesEntered(Long elementModuleId) throws SQLException {
+        return evaluationDAO.areAllNotesEntered(elementModuleId);
+    }
+
+    // Method to check if there are any 0 or 20 in the evaluations for a module
+    public boolean containsZeroOrTwenty(Long elementModuleId) throws SQLException {
+        return evaluationDAO.containsZeroOrTwenty(elementModuleId);
+    }
+
+    // Method to export the evaluations' notes to a specific file format (e.g., PDF or Excel)
+    public void exportEvaluationsToFile(Long elementModuleId, String format) throws SQLException {
+        evaluationDAO.exportNotesToFile(elementModuleId, format);
     }
 }
