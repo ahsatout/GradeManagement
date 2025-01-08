@@ -159,4 +159,18 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         }
         return false;
     }
+
+
+    public void updatePassword(Long id, String newPassword) throws SQLException {
+        String sql = "UPDATE Utilisateur SET password = ? WHERE id = ?";
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, newPassword);
+            stmt.setLong(2, id);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new IllegalArgumentException("Aucun utilisateur trouvé avec l'ID: " + id);
+            }
+        }
+    }
 }

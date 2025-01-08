@@ -54,4 +54,13 @@ public class UtilisateurService implements CrudService<Utilisateur> {
     public boolean isValidUser(String username, String password,String role) throws SQLException {
         return utilisateurDAO.isValidUser(username, password, role);
     }
+
+    public void updatePassword(Long id, String newPassword) throws SQLException {
+        Optional<Utilisateur> utilisateur = utilisateurDAO.findById(id);
+        if (utilisateur.isPresent()) {
+            utilisateurDAO.updatePassword(id, newPassword);
+        } else {
+            throw new IllegalArgumentException("Utilisateur non trouvé avec l'ID: " + id);
+        }
+    }
 }
