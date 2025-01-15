@@ -51,7 +51,8 @@ public class MainUser {
                     System.out.println("3. Gérer les modules");
                     System.out.println("4. Gérer les éléments");
                     System.out.println("5. Gérer les modalités d'évaluation");
-                    System.out.println("6. Déconnexion");
+                    System.out.println("6. Gérer les utilisateurs");
+                    System.out.println("7. Déconnexion");
                     System.out.println("0. Quitter");
                     System.out.print("Choix : ");
                     int choice = scanner.nextInt();
@@ -72,8 +73,12 @@ public class MainUser {
                             break;
                         case 5:
                             manageModaliteEvaluation(modaliteEvaluationService, elementModuleService, scanner);
+                            manageUser(utilisateurService, scanner);
                             break;
                         case 6:
+                            manageUser(utilisateurService, scanner);
+                            break;
+                        case 7:
                             System.out.println("Déconnexion en cours...");
                             isLoggedIn = false;
                             break;
@@ -130,7 +135,7 @@ public class MainUser {
                     Optional<Utilisateur> utilisateurOpt = utilisateurService.getUtilisateurByLogin(username);
                     if (utilisateurOpt.isPresent()) {
                         Utilisateur utilisateur = utilisateurOpt.get();
-                        utilisateurService.updatePassword(utilisateur.getId(), newPassword); // Mise à jour avec l'ID de l'utilisateur
+                        utilisateurService.updatePassword(utilisateur.getId(), newPassword);
                         System.out.println("Mot de passe changé avec succès !");
                     } else {
                         System.out.println("Utilisateur introuvable.");
@@ -238,7 +243,7 @@ public class MainUser {
             }
             Utilisateur utilisateur = optionalUtilisateur.get();
 
-            Professeur newProf = new Professeur(null,code, nom, prenom, specialite,utilisateur,new ArrayList<ElementModule>()); // null pour l'ID auto-généré
+            Professeur newProf = new Professeur(null,code, nom, prenom, specialite,utilisateur,new ArrayList<ElementModule>());
             professeurService.create(newProf);
 
             System.out.println("Professeur ajouté avec succès !");
@@ -322,15 +327,6 @@ public class MainUser {
 
 
 
-
-
-
-
-
-
-
-
-
     ///////////////////////////////////////////////////////////////////////////////
     //     ------------------- gestion des filieres ------------------------    ///
     ///////////////////////////////////////////////////////////////////////////////
@@ -377,7 +373,7 @@ public class MainUser {
 
     private static void addFiliere ( FiliereService filiereService, Scanner scanner) {
         try {
-            scanner.nextLine(); // Consommer la nouvelle ligne restante
+            scanner.nextLine();
 
             System.out.print("Code de la filière : ");
             String code = scanner.nextLine().trim();
@@ -393,7 +389,7 @@ public class MainUser {
                 return;
             }
 
-            Filiere newFiliere = new Filiere(null, code, nom,new ArrayList<Module>(),new ArrayList<Etudiant>()); // null pour l'ID auto-généré
+            Filiere newFiliere = new Filiere(null, code, nom,new ArrayList<Module>(),new ArrayList<Etudiant>());
             filiereService.create(newFiliere);
             System.out.println("Filière ajoutée avec succès !");
         } catch (SQLException e) {
@@ -405,9 +401,9 @@ public class MainUser {
         System.out.print("------- Laisser vide pour ne pas modifier -------\n");
         System.out.print("ID de la filière à mettre à jour : ");
         Long updateId = scanner.nextLong();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
 
-        // Récupérer la filière existante
+
         Optional<Filiere> existingFiliere = filiereService.getById(updateId);
         if (existingFiliere.isEmpty()) {
             System.out.println("Filière non trouvée !");
@@ -423,7 +419,7 @@ public class MainUser {
         String newNom = scanner.nextLine();
         String finalNom = newNom.isEmpty() ? currentFiliere.getNom() : newNom;
 
-        // Conserver les relations existantes (modules et chef de filière)
+
         Filiere updatedFiliere = new Filiere(
                 updateId,
                 finalCode,
@@ -499,7 +495,7 @@ public class MainUser {
     }
 
     private static void addModule(ModuleService moduleService, FiliereDAO filiereDAO, Scanner scanner) throws SQLException {
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
 
         System.out.print("Code du module : ");
         String code = scanner.nextLine().trim();
@@ -542,9 +538,9 @@ public class MainUser {
         System.out.print("------- Laisser vide pour ne pas modifier -------\n");
         System.out.print("ID du module à mettre à jour : ");
         Long updateId = scanner.nextLong();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
 
-        // Récupérer le module existant
+
         Optional<Module> existingModule = moduleService.getById(updateId);
         if (existingModule.isEmpty()) {
             System.out.println("Module non trouvé !");
@@ -637,7 +633,7 @@ public class MainUser {
                 System.out.println("5. Retourner au menu principal");
                 System.out.print("Choix : ");
                 int choix = scanner.nextInt();
-                scanner.nextLine(); // Consommer la nouvelle ligne restante
+                scanner.nextLine();
 
                 switch (choix) {
                     case 1:
@@ -663,7 +659,7 @@ public class MainUser {
             System.out.println("Erreur SQL : " + e.getMessage());
         } catch (InputMismatchException e) {
             System.out.println("Entrée invalide. Veuillez vérifier vos saisies !");
-            scanner.nextLine(); // Consommer la mauvaise entrée
+            scanner.nextLine();
         }
     }
 
@@ -678,12 +674,12 @@ public class MainUser {
 
         System.out.print("Coefficient de l'élément de module : ");
         Float coefficient = scanner.nextFloat();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
 
-        // Sélection du module associé
+
         System.out.print("ID du module associé : ");
         Long moduleId = scanner.nextLong();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
         Optional<Module> optionalModule = moduleService.getById(moduleId);
         if (optionalModule.isEmpty()) {
             System.out.println("Aucun module trouvé avec cet ID !");
@@ -691,10 +687,10 @@ public class MainUser {
         }
         Module module = optionalModule.get();
 
-        // Sélection du professeur associé
+
         System.out.print("ID du professeur associé : ");
         Long professeurId = scanner.nextLong();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
         Optional<Professeur> optionalProfesseur = professeurService.getById(professeurId);
         if (optionalProfesseur.isEmpty()) {
             System.out.println("Aucun professeur trouvé avec cet ID !");
@@ -702,7 +698,7 @@ public class MainUser {
         }
         Professeur professeur = optionalProfesseur.get();
 
-        // Création de l'élément de module
+
         ElementModule newElementModule = new ElementModule(null, nom, coefficient, module, professeur, new ArrayList<>());
         elementModuleService.create(newElementModule);
 
@@ -719,16 +715,16 @@ public class MainUser {
 
         System.out.print("ID de l'élément de module à mettre à jour : ");
         Long updateId = scanner.nextLong();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
 
-        // Vérification de l'existence de l'élément de module
+
         Optional<ElementModule> optionalElementModule = elementModuleService.getById(updateId);
         if (optionalElementModule.isEmpty()) {
             System.out.println("Aucun élément de module trouvé avec cet ID !");
             return;
         }
 
-        // Lecture des nouvelles données
+
         System.out.print("Nouveau nom de l'élément de module : ");
         String nom = scanner.nextLine().trim();
 
@@ -736,7 +732,7 @@ public class MainUser {
         String coefficientInput = scanner.nextLine().trim();
         Float coefficient = coefficientInput.isEmpty() ? null : Float.parseFloat(coefficientInput);
 
-        // Mise à jour du module associé
+
         System.out.print("Nouvel ID du module associé : ");
         String moduleIdInput = scanner.nextLine().trim();
         Module module = null;
@@ -750,7 +746,7 @@ public class MainUser {
             module = optionalModule.get();
         }
 
-        // Mise à jour du professeur associé
+
         System.out.print("Nouvel ID du professeur associé : ");
         String professeurIdInput = scanner.nextLine().trim();
         Professeur professeur = null;
@@ -764,7 +760,7 @@ public class MainUser {
             professeur = optionalProfesseur.get();
         }
 
-        // Mise à jour de l'élément de module
+
         ElementModule updatedElementModule = optionalElementModule.get();
         if (!nom.isEmpty()) updatedElementModule.setNom(nom);
         if (coefficient != null) updatedElementModule.setCoefficient(coefficient);
@@ -781,16 +777,16 @@ public class MainUser {
 
         System.out.print("ID de l'élément de module à supprimer : ");
         Long deleteId = scanner.nextLong();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
 
-        // Vérification de l'existence de l'élément de module
+
         Optional<ElementModule> optionalElementModule = elementModuleService.getById(deleteId);
         if (optionalElementModule.isEmpty()) {
             System.out.println("Aucun élément de module trouvé avec cet ID !");
             return;
         }
 
-        // Suppression
+
         elementModuleService.delete(deleteId);
         System.out.println("Élément de module supprimé avec succès !");
     }
@@ -896,7 +892,7 @@ public class MainUser {
             Role role = Role.valueOf(roleInput);
 
 
-            Utilisateur newUtil = new Utilisateur(null,login, password, role,null); // null pour l'ID auto-généré
+            Utilisateur newUtil = new Utilisateur(null,login, password, role,null);
             utilisateurService.create(newUtil);
 
             System.out.println("Utilisateur ajouté avec succès !");
@@ -911,9 +907,9 @@ public class MainUser {
         System.out.print("------- Laisser vide pour ne pas modifier -------\n");
         System.out.print("ID d'Utilisateur : ");
         Long updateId = scanner.nextLong();
-        scanner.nextLine(); // Consommer la nouvelle ligne restante
+        scanner.nextLine();
 
-        // Récupérer l'utilisateur existant
+
         Optional<Utilisateur> existingUser = utilisateurService.getById(updateId);
         if (existingUser.isEmpty()) {
             System.out.println("Utilisateur non trouvé !");
@@ -1012,9 +1008,8 @@ public class MainUser {
                                               ElementModuleService elementModuleService,
                                               Scanner scanner) {
         try {
-            scanner.nextLine(); // Consommer la nouvelle ligne restante
+            scanner.nextLine();
 
-            // Lecture du type de modalité
             System.out.print("Type de modalité (ex : CC, TP, PROJET, PRESENTATION) : ");
             String typeInput = scanner.nextLine().trim();
             Type type;
@@ -1025,17 +1020,17 @@ public class MainUser {
                 return;
             }
 
-            // Lecture du coefficient
+
             System.out.print("Coefficient (ex : 0.3, 0.5) : ");
             float coefficient = scanner.nextFloat();
             scanner.nextLine(); // Consommer la nouvelle ligne restante
 
-            // Lecture de l'ID de l'élément de module
+
             System.out.print("ID de l'élément de module : ");
             Long elementModuleId = scanner.nextLong();
             scanner.nextLine(); // Consommer la nouvelle ligne restante
 
-            // Recherche de l'élément de module
+
             Optional<ElementModule> optionalElementModule = elementModuleService.getById(elementModuleId);
             if (optionalElementModule.isEmpty()) {
                 System.out.println("Aucun élément de module trouvé avec cet ID !");
@@ -1043,7 +1038,7 @@ public class MainUser {
             }
             ElementModule elementModule = optionalElementModule.get();
 
-            // Création d'un nouvel objet ModaliteEvaluation
+
             ModaliteEvaluation newModalite = new ModaliteEvaluation(null, type, coefficient, elementModule, null);
             modaliteEvaluationService.create(newModalite);
 
@@ -1052,7 +1047,7 @@ public class MainUser {
             System.out.println("Erreur lors de l'ajout de la modalité d'évaluation : " + e.getMessage());
         } catch (InputMismatchException e) {
             System.out.println("Entrée invalide : " + e.getMessage());
-            scanner.nextLine(); // Consommer la mauvaise entrée
+            scanner.nextLine();
         }
     }
 
@@ -1134,7 +1129,7 @@ public class MainUser {
             System.out.println("Erreur lors de la mise à jour de la modalité d'évaluation : " + e.getMessage());
         } catch (InputMismatchException e) {
             System.out.println("Entrée invalide. Veuillez vérifier vos saisies !");
-            scanner.nextLine(); // Consommer la mauvaise entrée
+            scanner.nextLine();
         }
     }
 
